@@ -5,6 +5,108 @@
 #include <SDL/SDL_ttf.h>
 #define True 1;
 #define False 0;
+struct options
+{
+int r=0 ,s=0;
+};
+typedef struct options options;
+int optionsmenu(SDL_Surface* screen, SDL_Surface* t1[], SDL_Rect imagebg , TTF_Font* font,options *op)
+{
+  Uint32 time;
+int x,y;
+if (&op->r == 0 &&  &op->s==0){SDL_BlitSurface( t1[0] ,NULL, screen, &imagebg );}
+if (&op->r == 1 &&  &op->s==0){SDL_BlitSurface( t1[3] ,NULL, screen, &imagebg );}
+if (&op->r == 0 &&  &op->s==1){SDL_BlitSurface( t1[6] ,NULL, screen, &imagebg );}
+if (&op->r == 1 &&  &op->s==1){SDL_BlitSurface( t1[9] ,NULL, screen, &imagebg );}
+SDL_Flip(screen);
+SDL_Event event;
+while(1)
+{
+  time = SDL_GetTicks();
+  while(SDL_PollEvent(&event))
+  {
+    SDL_WaitEvent(&event);
+    switch(event.type)
+            {
+              case SDL_MOUSEMOTION:
+                    x = event.motion.x;
+                      y = event.motion.y;
+                      if (&op->r==0 && &op->s==0) {
+                              if(x>=441 && x<590 && y>=227 && y<=260)
+                              {
+                                SDL_BlitSurface( t1[1] ,NULL, screen, &imagebg );
+                              }
+                              if(x>=440 && x<=567 && y>=346 && y<=380)
+                              {
+                                  SDL_BlitSurface( t[2] ,NULL, screen, &imagebg );
+                              }
+                            }
+                            if (&op->r==0 && &op->s==1){
+                                   if(x>=441 && x<590 && y>=227 && y<=260)
+                                   {
+                                     SDL_BlitSurface( t1[7] ,NULL, screen, &imagebg );
+                                   }
+                                   if(x>=440 && x<=567 && y>=346 && y<=380)
+                                   {
+                                       SDL_BlitSurface( t[8] ,NULL, screen, &imagebg );
+                                   }
+                                 }
+                             if (&op->r==1 && &op->s==0){
+                                    if(x>=441 && x<590 && y>=227 && y<=260)
+                                    {
+                                      SDL_BlitSurface( t1[4] ,NULL, screen, &imagebg );
+                                    }
+                                    if(x>=440 && x<=567 && y>=346 && y<=380)
+                                    {
+                                        SDL_BlitSurface( t[5] ,NULL, screen, &imagebg );
+                                    }
+                                  }
+                                  if (&op->r==1 && &op->s==1){
+                                         if(x>=441 && x<590 && y>=227 && y<=260)
+                                         {
+                                           SDL_BlitSurface( t1[10] ,NULL, screen, &imagebg );
+                                         }
+                                         if(x>=440 && x<=567 && y>=346 && y<=380)
+                                         {
+                                             SDL_BlitSurface( t[11] ,NULL, screen, &imagebg );
+                                         }
+                                       }
+
+                              break;
+                              case SDL_MOUSEBUTTONDOWN:
+                                        x = event.button.x;
+                                      y = event.button.y;
+                                      if (event.button.button == SDL_BUTTON_LEFT) {
+                              if(x>=441 && x<=462 && y>=227 && y<=261)
+                              {
+                     if (&op->r ==1 ) { &op->r=0;}
+                              }
+                              if(x>=567 && x<=590 && y>=227 && y<=260)
+                              {
+                                if (&op->r ==0 ) { &op->r=1;}
+
+                              }
+                              if(x>=440 && x<=462 && y>=435 && y<=381)
+                              {
+                                if (&op->s ==1 ) { &op->s=0;}
+
+                              }
+                              if(x>=567 && x<=590 && y>=347 && y<=380)
+                              {
+                                if (&op->s ==0 ) { &op->s=1;}
+                              }
+                              }
+                              break;
+
+  }
+                  SDL_Flip(screen);
+                  if(100/30 > (SDL_GetTicks()-time))
+                          SDL_Delay(100/30 - (SDL_GetTicks()-time));
+
+            }
+  }
+
+}
 int showmenu(SDL_Surface* screen, SDL_Surface* t[], SDL_Rect imagebg , TTF_Font* font)
 {
         Uint32 time;
@@ -59,6 +161,7 @@ int showmenu(SDL_Surface* screen, SDL_Surface* t[], SDL_Rect imagebg , TTF_Font*
 
                                                 }
                                                 break;
+
                                 case SDL_MOUSEBUTTONDOWN:
                                           x = event.button.x;
                                         y = event.button.y;
@@ -95,7 +198,7 @@ int showmenu(SDL_Surface* screen, SDL_Surface* t[], SDL_Rect imagebg , TTF_Font*
 int  main() {
   char pause;
   int l=0;
-
+options  *op;
    SDL_Init(SDL_INIT_VIDEO);
    TTF_Init();
 
@@ -138,6 +241,20 @@ int  main() {
   t[2]=IMG_Load("Menu/Loadgameon.png");
   t[3]=IMG_Load("Menu/optionon.png");
   t[4]=IMG_Load("Menu/quiton.png");
+  SDL_Surface* t1[11];
+  t1[0]=IMG_Load("Menu/options/option-800-600-off.png");
+  t1[1]=IMG_Load("Menu/options/option-800-600-off-arroson.png");
+  t1[2]=IMG_Load("Menu/options/option-800-600-off-soundarroson.png");
+  t1[3]=IMG_Load("Menu/options/option-1024-768-off.png");
+  t1[4]=IMG_Load("Menu/options/option-1024-768-off-arroson.png");
+  t1[5]=IMG_Load("Menu/options/option-1024-768-off-sound arroson.png");
+  t1[6]=IMG_Load("Menu/options/option800-600-on.png");
+  t1[7]=IMG_Load("Menu/options/option800-600-on-arroson.png");
+  t1[8]=IMG_Load("Menu/options/option800-600-on-soundarroson.png");
+  t1[9]=IMG_Load("Menu/options/option-1024-768-on.png");
+  t1[10]=IMG_Load("Menu/options/option-1024-768-on_arroson.png");
+  t1[11]=IMG_Load("Menu/options/option-1024-768-on-soundarroson.png");
+
   SDL_Rect imagebg;
   imagebg.x = 0;
   imagebg.y = 0;
