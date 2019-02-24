@@ -3,21 +3,23 @@
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_mixer.h>
 #include <SDL/SDL_ttf.h>
+#include <string.h>
 #define True 1;
 #define False 0;
 struct options
 {
-int r=0 ,s=0;
+int r;
+int s;
 };
 typedef struct options options;
-int optionsmenu(SDL_Surface* screen, SDL_Surface* t1[], SDL_Rect imagebg , TTF_Font* font,options *op)
+options optionsmenu(SDL_Surface* screen, SDL_Surface* t1[], SDL_Rect imagebg , TTF_Font* font,options op)
 {
   Uint32 time;
 int x,y;
-if (&op->r == 0 &&  &op->s==0){SDL_BlitSurface( t1[0] ,NULL, screen, &imagebg );}
-if (&op->r == 1 &&  &op->s==0){SDL_BlitSurface( t1[3] ,NULL, screen, &imagebg );}
-if (&op->r == 0 &&  &op->s==1){SDL_BlitSurface( t1[6] ,NULL, screen, &imagebg );}
-if (&op->r == 1 &&  &op->s==1){SDL_BlitSurface( t1[9] ,NULL, screen, &imagebg );}
+if (op.r == 0 &&  op.s==0){SDL_BlitSurface( t1[0] ,NULL, screen, &imagebg );}
+if (op.r == 1 &&  op.s==0){SDL_BlitSurface( t1[3] ,NULL, screen, &imagebg );}
+if (op.r == 0 &&  op.s==1){SDL_BlitSurface( t1[6] ,NULL, screen, &imagebg );}
+if (op.r == 1 &&  op.s==1){SDL_BlitSurface( t1[9] ,NULL, screen, &imagebg );}
 SDL_Flip(screen);
 SDL_Event event;
 while(1)
@@ -31,44 +33,44 @@ while(1)
               case SDL_MOUSEMOTION:
                     x = event.motion.x;
                       y = event.motion.y;
-                      if (&op->r==0 && &op->s==0) {
+                      if (op.r==0 && op.s==0) {
                               if(x>=441 && x<590 && y>=227 && y<=260)
                               {
                                 SDL_BlitSurface( t1[1] ,NULL, screen, &imagebg );
                               }
                               if(x>=440 && x<=567 && y>=346 && y<=380)
                               {
-                                  SDL_BlitSurface( t[2] ,NULL, screen, &imagebg );
+                                  SDL_BlitSurface( t1[2] ,NULL, screen, &imagebg );
                               }
                             }
-                            if (&op->r==0 && &op->s==1){
+                            if (op.r==0 && op.s==1){
                                    if(x>=441 && x<590 && y>=227 && y<=260)
                                    {
                                      SDL_BlitSurface( t1[7] ,NULL, screen, &imagebg );
                                    }
                                    if(x>=440 && x<=567 && y>=346 && y<=380)
                                    {
-                                       SDL_BlitSurface( t[8] ,NULL, screen, &imagebg );
+                                       SDL_BlitSurface( t1[8] ,NULL, screen, &imagebg );
                                    }
                                  }
-                             if (&op->r==1 && &op->s==0){
+                             if (op.r==1 && op.s==0){
                                     if(x>=441 && x<590 && y>=227 && y<=260)
                                     {
                                       SDL_BlitSurface( t1[4] ,NULL, screen, &imagebg );
                                     }
                                     if(x>=440 && x<=567 && y>=346 && y<=380)
                                     {
-                                        SDL_BlitSurface( t[5] ,NULL, screen, &imagebg );
+                                        SDL_BlitSurface( t1[5] ,NULL, screen, &imagebg );
                                     }
                                   }
-                                  if (&op->r==1 && &op->s==1){
+                                  if (op.r == 1 && op.s == 1){
                                          if(x>=441 && x<590 && y>=227 && y<=260)
                                          {
                                            SDL_BlitSurface( t1[10] ,NULL, screen, &imagebg );
                                          }
                                          if(x>=440 && x<=567 && y>=346 && y<=380)
                                          {
-                                             SDL_BlitSurface( t[11] ,NULL, screen, &imagebg );
+                                             SDL_BlitSurface( t1[11] ,NULL, screen, &imagebg );
                                          }
                                        }
 
@@ -79,22 +81,27 @@ while(1)
                                       if (event.button.button == SDL_BUTTON_LEFT) {
                               if(x>=441 && x<=462 && y>=227 && y<=261)
                               {
-                     if (&op->r ==1 ) { &op->r=0;}
+                     if (op.r ==1 ) { op.r=0;
+                       if (op.s == 0) {SDL_BlitSurface( t1[1] ,NULL, screen, &imagebg );}
+                       if (op.s == 1) {SDL_BlitSurface( t1[7] ,NULL, screen, &imagebg );}
+                             }
                               }
                               if(x>=567 && x<=590 && y>=227 && y<=260)
                               {
-                                if (&op->r ==0 ) { &op->r=1;}
-
+                                if (op.r ==0 ) { op.r=1;}
                               }
                               if(x>=440 && x<=462 && y>=435 && y<=381)
                               {
-                                if (&op->s ==1 ) { &op->s=0;}
-
+                                if (op.s ==1 ) { op.s=0;}
                               }
                               if(x>=567 && x<=590 && y>=347 && y<=380)
                               {
-                                if (&op->s ==0 ) { &op->s=1;}
+                                if (op.s ==0 ) { op.s=1;}
                               }
+                              }
+                              if(x>=316 && x<=480 && y>=400 && y<=451)
+                              {
+                              return op;
                               }
                               break;
 
@@ -198,7 +205,7 @@ int showmenu(SDL_Surface* screen, SDL_Surface* t[], SDL_Rect imagebg , TTF_Font*
 int  main() {
   char pause;
   int l=0;
-options  *op;
+options  op;
    SDL_Init(SDL_INIT_VIDEO);
    TTF_Init();
 
@@ -288,8 +295,9 @@ options  *op;
     frame.w=32;
     frame.h=32;
    int r =showmenu(screen, t ,imagebg,font);
+   if (r == 3){op= optionsmenu(screen,t1, imagebg , font,op);}
     SDL_Event event;
-    while(r!=0)
+    while(r==1)
     {
       SDL_BlitSurface(caractere,&frame,screen,&posdetec);
       SDL_Flip(screen);
