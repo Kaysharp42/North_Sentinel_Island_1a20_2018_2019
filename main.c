@@ -4,6 +4,7 @@
 #include <SDL/SDL_mixer.h>
 #include <SDL/SDL_ttf.h>
 #include <string.h>
+#include <time.h>
 #define True 1;
 #define False 0;
 struct options
@@ -12,200 +13,225 @@ int r;
 int s;
 };
 typedef struct options options;
-options optionsmenu(SDL_Surface* screen, SDL_Surface* t1[], SDL_Rect imagebg , TTF_Font* font,options op)
+options optionsmenu(SDL_Surface* screen, SDL_Surface* t1[], SDL_Surface* t[], SDL_Rect imagebg , TTF_Font* font,options op)
 {
   Uint32 time;
-int x,y;
-if (op.r == 0 &&  op.s==0){SDL_BlitSurface( t1[0] ,NULL, screen, &imagebg );}
-if (op.r == 1 &&  op.s==0){SDL_BlitSurface( t1[3] ,NULL, screen, &imagebg );}
-if (op.r == 0 &&  op.s==1){SDL_BlitSurface( t1[6] ,NULL, screen, &imagebg );}
-if (op.r == 1 &&  op.s==1){SDL_BlitSurface( t1[9] ,NULL, screen, &imagebg );}
+int x,y,c=0;
+SDL_FreeSurface(t[x]);
+SDL_BlitSurface(t[y],NULL,screen,&imagebg);
 SDL_Flip(screen);
 SDL_Event event;
-while(1)
-{
-  time = SDL_GetTicks();
-  while(SDL_PollEvent(&event))
+
+  while(1)
   {
-    SDL_WaitEvent(&event);
-    switch(event.type)
-            {
-              case SDL_MOUSEMOTION:
-                    x = event.motion.x;
-                      y = event.motion.y;
-                      if (op.r==0 && op.s==0) {
-                              if(x>=441 && x<590 && y>=227 && y<=260)
-                              {
-                                SDL_BlitSurface( t1[1] ,NULL, screen, &imagebg );
-                              }
-                              if(x>=440 && x<=567 && y>=346 && y<=380)
-                              {
-                                  SDL_BlitSurface( t1[2] ,NULL, screen, &imagebg );
-                              }
-                            }
-                            if (op.r==0 && op.s==1){
-                                   if(x>=441 && x<590 && y>=227 && y<=260)
-                                   {
-                                     SDL_BlitSurface( t1[7] ,NULL, screen, &imagebg );
-                                   }
-                                   if(x>=440 && x<=567 && y>=346 && y<=380)
-                                   {
-                                       SDL_BlitSurface( t1[8] ,NULL, screen, &imagebg );
-                                   }
-                                 }
-                             if (op.r==1 && op.s==0){
-                                    if(x>=441 && x<590 && y>=227 && y<=260)
-                                    {
-                                      SDL_BlitSurface( t1[4] ,NULL, screen, &imagebg );
-                                    }
-                                    if(x>=440 && x<=567 && y>=346 && y<=380)
-                                    {
-                                        SDL_BlitSurface( t1[5] ,NULL, screen, &imagebg );
-                                    }
-                                  }
-                                  if (op.r == 1 && op.s == 1){
-                                         if(x>=441 && x<590 && y>=227 && y<=260)
-                                         {
-                                           SDL_BlitSurface( t1[10] ,NULL, screen, &imagebg );
-                                         }
-                                         if(x>=440 && x<=567 && y>=346 && y<=380)
-                                         {
-                                             SDL_BlitSurface( t1[11] ,NULL, screen, &imagebg );
-                                         }
-                                       }
+      while (SDL_PollEvent(&event))
 
-                              break;
-                              case SDL_MOUSEBUTTONDOWN:
-                                        x = event.button.x;
-                                      y = event.button.y;
-                                      if (event.button.button == SDL_BUTTON_LEFT) {
-                              if(x>=441 && x<=462 && y>=227 && y<=261)
-                              {
-                     if (op.r ==1 ) { op.r=0;
-                       if (op.s == 0) {SDL_BlitSurface( t1[1] ,NULL, screen, &imagebg );}
-                       if (op.s == 1) {SDL_BlitSurface( t1[7] ,NULL, screen, &imagebg );}
-                             }
-                              }
-                              if(x>=567 && x<=590 && y>=227 && y<=260)
-                              {
-                                if (op.r ==0 ) { op.r=1;}
-                              }
-                              if(x>=440 && x<=462 && y>=435 && y<=381)
-                              {
-                                if (op.s ==1 ) { op.s=0;}
-                              }
-                              if(x>=567 && x<=590 && y>=347 && y<=380)
-                              {
-                                if (op.s ==0 ) { op.s=1;}
-                              }
-                              }
-                              if(x>=316 && x<=480 && y>=400 && y<=451)
-                              {
-                              return op;
-                              }
-                              break;
+      {
+          if (event.type == SDL_QUIT)
+          {
+          return op;
+          }
+          if(event.type == SDL_MOUSEMOTION)
+          {
+                  if((event.motion.x>78)&&(event.motion.x<156)&&(event.motion.y>296)&&(event.motion.y<375))
+                  {
+                  y=1;
+                  }
+                  if((event.motion.x>254)&&(event.motion.x<327)&&(event.motion.y>296)&&(event.motion.y<375))
+                  {
+                  y=2;
+                  }
+                  if((event.motion.x>418)&&(event.motion.x<490)&&(event.motion.y>296)&&(event.motion.y<375))
+                  {
+                  y=3;
+                  }
+                  if((event.motion.x>566)&&(event.motion.x<638)&&(event.motion.y>296)&&(event.motion.y<375))
+                  {
+                  y=4;
+                  }
+                  if((event.motion.x>734)&&(event.motion.x<806)&&(event.motion.y>296)&&(event.motion.y<375))
+                  {
+                  y=5;
+                  }
 
+
+          }
+          if(event.type == SDL_MOUSEBUTTONDOWN)
+          {
+              if (event.button.button == SDL_BUTTON_LEFT)
+              {
+                  switch (y)
+                  {
+                  case 1:
+                    //
+                      break;
+                  case 2:
+///
+                     break;
+                  case 3:
+//
+                      break;
+                      case 4:
+                      //
+                      break;
+                  case 5:
+//
+                      break;
+
+                  }
+              }
+          }
+          if (event.type == SDL_KEYDOWN)
+          {
+              if(event.key.keysym.sym == SDLK_RIGHT)
+              {
+                  if(x<5)
+                      y=y+1;
+              }
+              if(event.key.keysym.sym == SDLK_LEFT)
+              {
+                  if(x>1)
+                      y=y-1;
+              }
+              else if (((event.key.keysym.sym == SDLK_KP_ENTER)||(event.key.keysym.sym == SDLK_RETURN)))
+              {
+                  switch (y)
+                  {
+                  case 1:
+                    //
+                      break;
+                  case 2:
+                    //
+                      break;
+                  case 3:
+                //
+                      break;
+                      case 4:
+              //
+
+                      break;
+                  case 5:
+            return op;
+                      break;
+                  }
+              }
+          }
+      }
   }
-                  SDL_Flip(screen);
-                  if(100/30 > (SDL_GetTicks()-time))
-                          SDL_Delay(100/30 - (SDL_GetTicks()-time));
-
-            }
-  }
-
 }
-int showmenu(SDL_Surface* screen, SDL_Surface* t[], SDL_Rect imagebg , TTF_Font* font)
+int showmenu(SDL_Surface* screen, SDL_Surface* t[], SDL_Rect imagebg , TTF_Font* font, SDL_Surface* t1[])
 {
+  options op;
         Uint32 time;
-        int x,y,c=0;
-
-        SDL_BlitSurface( t[0] ,NULL, screen, &imagebg );
+        int i=0,x=0,y,c=0,tmp=0;
+  //      SDL_BlitSurface( t[x] ,NULL, screen, &imagebg );
         SDL_Flip(screen);
         SDL_Event event;
+        printf("sssss1s\n" );
         while(1)
-        {
-                time = SDL_GetTicks();
-                while(SDL_PollEvent(&event))
+            {
+/*            if (i>16)  i =0;
+              SDL_BlitSurface(t[i],NULL,screen,&imagebg);
+              SDL_FreeSurface(t[i-1]);
+              i++;*/
+                while (SDL_PollEvent(&event))
+
                 {
                   SDL_WaitEvent(&event);
 
-                  switch(event.type)
-                          {
-                                  case SDL_QUIT:
+                    if (event.type == SDL_QUIT)
+                    {
+                      return 0;
+                    }
+                    if(event.type == SDL_MOUSEMOTION)
+                    {
+                            if((event.motion.x>78)&&(event.motion.x<156)&&(event.motion.y>296)&&(event.motion.y<375))
+                            {
+                              tmp=x;
+                            x=1;
+                            }
+                            if((event.motion.x>254)&&(event.motion.x<327)&&(event.motion.y>296)&&(event.motion.y<375))
+                            {
+                              tmp=x;
+                            x=2;
+                            }
+                            if((event.motion.x>418)&&(event.motion.x<490)&&(event.motion.y>296)&&(event.motion.y<375))
+                            {
+                              tmp=x;
+                            x=3;
+                            }
+                            if((event.motion.x>566)&&(event.motion.x<638)&&(event.motion.y>296)&&(event.motion.y<375))
+                            {
+                              tmp=x;
+                            x=4;
+                            }
+                    }
+                    if(event.type == SDL_MOUSEBUTTONDOWN)
+                    {
+                        if (event.button.button == SDL_BUTTON_LEFT)
+                        {
+                            switch (x)
+                            {
+                            case 1:
+                                //
+                                break;
+                            case 2:
+                                //
+                                break;
+                            case 3:
+                            op=optionsmenu(screen, t1,t, imagebg ,font, op);
+                    //        SDL_FreeSurface(t[y]);
 
-
-                                          return 0;
-                                          break;
-                                case SDL_MOUSEMOTION:
-                                      x = event.motion.x;
-                                        y = event.motion.y;
-                                                if(x>=0 && x<=233 && y>=297 && y<=350)
-                                                {
-
-                                                  SDL_BlitSurface( t[1] ,NULL, screen, &imagebg );
-                                                   c=1;
-                                                }
-                                                if(x>=0 && x<=233 && y>=365 && y<=425)
-                                                {
-
-                                                    SDL_BlitSurface( t[2] ,NULL, screen, &imagebg );
-
-                                                     c=2;
-                                                }
-                                                if(x>=0 && x<=233 && y>=435 && y<=491)
-                                                {
-
-                                                    SDL_BlitSurface( t[3] ,NULL, screen, &imagebg );
-
-                                                     c=3;
-                                                }
-                                                if(x>=0 && x<=233 && y>=504 && y<=560)
-                                                {
-
-                                                    SDL_BlitSurface( t[4] ,NULL, screen, &imagebg );
-
-                                                     c=4;
-
-                                                }
-                                                break;
-
-                                case SDL_MOUSEBUTTONDOWN:
-                                          x = event.button.x;
-                                        y = event.button.y;
-                                        if (event.button.button == SDL_BUTTON_LEFT) {
-                                if(x>=0 && x<=233 && y>=297 && y<=350)
-                                {
-                       return 1;
-                                }
-                                if(x>=0 && x<=233 && y>=365 && y<=425)
-                                {
-                                  return 2;
-                                }
-                                if(x>=0 && x<=233 && y>=435 && y<=491)
-                                {
-                                  return 3;
-                                }
-                                if(x>=0 && x<=233 && y>=504 && y<=560)
-                                {
-                                  return 0;
-                                }
-                                }
+                                break;
+                                case 4:
+                            return 0;
                                 break;
 
+                            }
+                        }
+                    }
+                    if (event.type == SDL_KEYDOWN)
+                    {
+                        if(event.key.keysym.sym == SDLK_RIGHT)
+                        {
+                            if(x<4)
+                            tmp=x;
+                                x=x+1;
+                        }
+                        if(event.key.keysym.sym == SDLK_LEFT)
+                        {
+                            if(x>1)
+                            tmp=x;
+                                x=x-1;
+                        }
+                        else if (((event.key.keysym.sym == SDLK_KP_ENTER)||(event.key.keysym.sym == SDLK_RETURN)))
+                        {
+                            switch (x)
+                            {
+                            case 1:
+                                //
+                                break;
+                            case 2:
+                              //
+                                break;
+                            case 3:
+                                op=optionsmenu(screen,t1,t, imagebg ,font, op);
+                                break;
+                                case 4:
+                                return 0;
+                                break;
+                            }
+                        }
+                    }
+                }
+                SDL_FreeSurface(t[tmp]);
+                SDL_Flip(screen);
 
-    }
-
-                    SDL_Flip(screen);
-                    if(100/30 > (SDL_GetTicks()-time))
-                            SDL_Delay(100/30 - (SDL_GetTicks()-time));
-
-        }
-}
+            }
 }
 int  main() {
   char pause;
-  int l=0;
-options  op;
+  int l=0,i=0;
    SDL_Init(SDL_INIT_VIDEO);
    TTF_Init();
 
@@ -241,26 +267,42 @@ options  op;
     // load the bit map into image surface & check
   image = SDL_LoadBMP("background.bmp");// or IMG_Load
   WinImg = IMG_Load("win.png");// or IMG_Load
-
-  SDL_Surface* t[5];
-  t[0]=IMG_Load("Menu/menu101.png");
-  t[1]=IMG_Load("Menu/playon.png");
-  t[2]=IMG_Load("Menu/Loadgameon.png");
-  t[3]=IMG_Load("Menu/optionon.png");
-  t[4]=IMG_Load("Menu/quiton.png");
-  SDL_Surface* t1[11];
-  t1[0]=IMG_Load("Menu/options/option-800-600-off.png");
-  t1[1]=IMG_Load("Menu/options/option-800-600-off-arroson.png");
-  t1[2]=IMG_Load("Menu/options/option-800-600-off-soundarroson.png");
-  t1[3]=IMG_Load("Menu/options/option-1024-768-off.png");
-  t1[4]=IMG_Load("Menu/options/option-1024-768-off-arroson.png");
-  t1[5]=IMG_Load("Menu/options/option-1024-768-off-sound arroson.png");
-  t1[6]=IMG_Load("Menu/options/option800-600-on.png");
-  t1[7]=IMG_Load("Menu/options/option800-600-on-arroson.png");
-  t1[8]=IMG_Load("Menu/options/option800-600-on-soundarroson.png");
-  t1[9]=IMG_Load("Menu/options/option-1024-768-on.png");
-  t1[10]=IMG_Load("Menu/options/option-1024-768-on_arroson.png");
-  t1[11]=IMG_Load("Menu/options/option-1024-768-on-soundarroson.png");
+printf("sss\n");
+  SDL_Surface* t[15];
+  t[0]=IMG_Load("Menu/options/1.png");
+  t[1]=IMG_Load("Menu/options/2.png");
+  t[2]=IMG_Load("Menu/options/3.png");
+  t[3]=IMG_Load("Menu/options/4.png");
+  t[4]=IMG_Load("Menu/options/5.png");
+  t[5]=IMG_Load("Menu/options/6.png");
+  t[6]=IMG_Load("Menu/options/7.png");
+  t[7]=IMG_Load("Menu/options/8.png");
+  t[8]=IMG_Load("Menu/options/9.png");
+  t[9]=IMG_Load("Menu/options/10.png");
+  t[10]=IMG_Load("Menu/options/11.png");
+  t[11]=IMG_Load("Menu/options/12.png");
+  t[12]=IMG_Load("Menu/options/13.png");
+  t[13]=IMG_Load("Menu/options/14.png");
+  t[14]=IMG_Load("Menu/options/15.png");
+  t[15]=IMG_Load("Menu/options/16.png");
+  SDL_Surface* t1[15];
+  t1[0]=IMG_Load("Menu/options/1.png");
+  t1[1]=IMG_Load("Menu/options/2.png");
+  t1[2]=IMG_Load("Menu/options/3.png");
+  t1[3]=IMG_Load("Menu/options/4.png");
+  t1[4]=IMG_Load("Menu/options/5.png");
+  t1[5]=IMG_Load("Menu/options/6.png");
+  t1[6]=IMG_Load("Menu/options/7.png");
+  t1[7]=IMG_Load("Menu/options/8.png");
+  t1[8]=IMG_Load("Menu/options/9.png");
+  t1[9]=IMG_Load("Menu/options/10.png");
+  t1[10]=IMG_Load("Menu/options/11.png");
+  t1[11]=IMG_Load("Menu/options/12.png");
+  t1[12]=IMG_Load("Menu/options/13.png");
+  t1[13]=IMG_Load("Menu/options/14.png");
+  t1[14]=IMG_Load("Menu/options/15.png");
+  t1[15]=IMG_Load("Menu/options/16.png");
+  printf("sss\n");
 
   SDL_Rect imagebg;
   imagebg.x = 0;
@@ -269,6 +311,9 @@ options  op;
     printf( " ERROR %s\n",SDL_GetError());
     return 1;
   }
+  if (i>16)  i =0;
+    SDL_BlitSurface(t[i],NULL,screen,&positionecran);
+    i++;
   positionecran.x = 0;
   positionecran.y = 0;
   positionecran.w = 800;
@@ -277,7 +322,7 @@ options  op;
   positionwin.y = 0;
   positionwin.w = WinImg->w;
   positionwin.h =WinImg->h;
-    SDL_BlitSurface(image, NULL, screen, &positionecran);
+//    SDL_BlitSurface(image, NULL, screen, &positionecran);
     SDL_Flip(screen);
      int CurFrame =0, MaxFrame = 8;
     SDL_Surface *caractere;
@@ -294,8 +339,10 @@ options  op;
     frame.y=0;
     frame.w=32;
     frame.h=32;
-   int r =showmenu(screen, t ,imagebg,font);
-   if (r == 3){op= optionsmenu(screen,t1, imagebg , font,op);}
+    printf("sss\n");
+
+   int r =showmenu(screen, t ,imagebg,font,t1);
+   printf("sss\n");
     SDL_Event event;
     while(r==1)
     {
